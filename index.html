@@ -1,163 +1,281 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Haikyuu!! FLY HIGH - Team Builder</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Haikyu Fly High Team Builder</title>
 <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
-    h1 { text-align: center; color: #ff6600; }
-    .position { background: white; padding: 10px; margin: 10px 0; border-radius: 8px; }
-    select { width: 100%; padding: 5px; }
-    .team-summary, .synergy-summary {
-        background: white; padding: 15px; margin-top: 20px; border-radius: 8px;
-    }
-    .player-card {
-        display: flex; align-items: center; gap: 10px;
-        margin: 5px 0; background: #fafafa; padding: 5px; border-radius: 6px;
-    }
-    .player-card img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; }
-    .synergy-item {
-        background: #e6f7ff; padding: 8px; border-radius: 6px; margin: 5px 0;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to top, #f9d976, #f39f86);
+    margin: 0; padding: 20px;
+    display: flex; justify-content: center;
+  }
+  .team-builder {
+    background: #0277bd;
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 900px;
+    color: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .court {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    background: #f1c40f; /* quadra */
+    border-radius: 15px;
+    margin: auto;
+  }
+  /* Hexagon shape container */
+  .hex {
+    position: absolute;
+    width: 130px;
+    height: 110px;
+    background-color: rgba(255,255,255,0.15);
+    clip-path: polygon(
+      50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .hex:hover {
+    border-color: #fff;
+  }
+  .hex.selected {
+    border-color: #fff;
+    background-color: rgba(255,255,255,0.3);
+  }
+  .char-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 5px;
+    border: 2px solid #fff;
+  }
+  .char-name {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+  }
+  /* Posições - ajusta conforme o layout hexagonal */
+  /* linha de trás */
+  #pos-1 { top: 20px; left: 80px; }
+  #pos-6 { top: 20px; left: 335px; }
+  #pos-5 { top: 20px; left: 580px; }
+  /* linha da frente */
+  #pos-7 { top: 150px; left: 10px; }
+  #pos-2 { top: 150px; left: 215px; }
+  #pos-3 { top: 150px; left: 385px; }
+  #pos-4 { top: 150px; left: 550px; }
+  
+  /* Sinergias */
+  .sinergies {
+    margin-top: 25px;
+    background: rgba(0,0,0,0.25);
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sinergies h2 {
+    margin-top: 0;
+  }
+  .sinergy-item {
+    margin-bottom: 5px;
+  }
 </style>
 </head>
 <body>
 
-<h1>🏐 Haikyuu!! FLY HIGH - Team Builder</h1>
-
-<div id="team-builder"></div>
-
-<div class="team-summary">
-    <h2>Resumo da Equipe</h2>
-    <div id="team-list"></div>
-</div>
-
-<div class="synergy-summary">
+<div class="team-builder">
+  <h1>Haikyu Fly High - Team Builder</h1>
+  <div class="court">
+    <div class="hex" id="pos-1" data-position="OP">
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Oposto</div>
+    </div>
+    <div class="hex" id="pos-6" data-position="MB" >
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Meio</div>
+    </div>
+    <div class="hex" id="pos-5" data-position="WS">
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Pontas</div>
+    </div>
+    <div class="hex" id="pos-7" data-position="L">
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Líbero</div>
+    </div>
+    <div class="hex" id="pos-2" data-position="WS">
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Pontas</div>
+    </div>
+    <div class="hex" id="pos-3" data-position="MB">
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Meio</div>
+    </div>
+    <div class="hex" id="pos-4" data-position="S">
+      <img class="char-img" src="" alt="" />
+      <div class="char-name">Sábio (S)</div>
+    </div>
+  </div>
+  
+  <div class="sinergies">
     <h2>Sinergias Ativadas</h2>
-    <div id="synergy-list"></div>
+    <div id="sinergy-list">
+      Nenhuma sinergia ativada.
+    </div>
+  </div>
 </div>
 
 <script>
-// Posições do time
-const positions = [
-    { id: "setter", name: "Setter" },
-    { id: "mb1", name: "Middle Blocker 1" },
-    { id: "mb2", name: "Middle Blocker 2" },
-    { id: "ws1", name: "Wing Spiker 1" },
-    { id: "ws2", name: "Wing Spiker 2" },
-    { id: "opposite", name: "Opposite Hitter" },
-    { id: "libero", name: "Libero" }
-];
-
-// Lista de personagens (exemplo com imagens)
-const characters = [
-    { name: "Kageyama Tobio", role: "Setter", img: "https://i.imgur.com/6K6N7S1.png" },
-    { name: "Hinata Shoyo", role: "Middle Blocker", img: "https://i.imgur.com/gZnwyJD.png" },
-    { name: "Tsukishima Kei", role: "Middle Blocker", img: "https://i.imgur.com/jwE1D0Z.png" },
-    { name: "Azumane Asahi", role: "Wing Spiker", img: "https://i.imgur.com/DuJcPGR.png" },
-    { name: "Sawamura Daichi", role: "Opposite Hitter", img: "https://i.imgur.com/pnLVE3j.png" },
-    { name: "Nishinoya Yuu", role: "Libero", img: "https://i.imgur.com/IvQpB3r.png" },
-    { name: "Yamaguchi Tadashi", role: "Middle Blocker", img: "https://i.imgur.com/0m4b1Hu.png" },
-    { name: "Tanaka Ryunosuke", role: "Wing Spiker", img: "https://i.imgur.com/FPXZFLd.png" }
-];
-
-// Lista de sinergias (pares ou combinações)
-const synergies = [
-    { combo: ["Kageyama Tobio", "Hinata Shoyo"], effect: "Freak Quick Attack (+Velocidade no ataque)" },
-    { combo: ["Sawamura Daichi", "Nishinoya Yuu"], effect: "Defesa de Ferro (+Resistência)" },
-    { combo: ["Tsukishima Kei", "Yamaguchi Tadashi"], effect: "Dupla de Bloqueio (+Eficácia no bloqueio)" }
-];
-
-const team = {};
-
-function createBuilder() {
-    const container = document.getElementById("team-builder");
-
-    positions.forEach(pos => {
-        const div = document.createElement("div");
-        div.classList.add("position");
-        
-        const label = document.createElement("label");
-        label.innerText = pos.name;
-        
-        const select = document.createElement("select");
-        const emptyOption = document.createElement("option");
-        emptyOption.value = "";
-        emptyOption.innerText = "Selecione um personagem";
-        select.appendChild(emptyOption);
-
-        // Filtra personagens pela função
-        characters
-            .filter(c => c.role === pos.name.replace(/\s\d/, "")) // ignora número
-            .forEach(c => {
-                const option = document.createElement("option");
-                option.value = c.name;
-                option.innerText = c.name;
-                select.appendChild(option);
-            });
-
-        select.addEventListener("change", () => {
-            team[pos.name] = select.value;
-            updateSummary();
-            updateSynergies();
-        });
-
-        div.appendChild(label);
-        div.appendChild(select);
-        container.appendChild(div);
-    });
-}
-
-function updateSummary() {
-    const list = document.getElementById("team-list");
-    list.innerHTML = "";
-
-    positions.forEach(pos => {
-        const playerName = team[pos.name] || null;
-        const charData = characters.find(c => c.name === playerName);
-
-        const card = document.createElement("div");
-        card.classList.add("player-card");
-
-        if (charData) {
-            const img = document.createElement("img");
-            img.src = charData.img;
-            card.appendChild(img);
-
-            const text = document.createElement("span");
-            text.innerText = `${pos.name}: ${charData.name}`;
-            card.appendChild(text);
-        } else {
-            const text = document.createElement("span");
-            text.innerText = `${pos.name}: —`;
-            card.appendChild(text);
-        }
-
-        list.appendChild(card);
-    });
-}
-
-function updateSynergies() {
-    const synergyDiv = document.getElementById("synergy-list");
-    synergyDiv.innerHTML = "";
-
-    const chosenPlayers = Object.values(team).filter(Boolean);
-
-    synergies.forEach(s => {
-        if (s.combo.every(p => chosenPlayers.includes(p))) {
-            const item = document.createElement("div");
-            item.classList.add("synergy-item");
-            item.innerText = `${s.combo.join(" + ")} → ${s.effect}`;
-            synergyDiv.appendChild(item);
-        }
-    });
-
-    if (synergyDiv.innerHTML === "") {
-        synergyDiv.innerHTML = "<em>Nenhuma sinergia ativa</em>";
+  // Personagens e suas informações (nome, imagem, posição e sinergias)
+  const characters = {
+    "hinata": {
+      name: "Shōyō Hinata",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/5/5b/Hinata_Fly_High.png",
+      position: ["WS"],
+      synergy: ["agilidade"]
+    },
+    "kageyama": {
+      name: "Tobio Kageyama",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/d/d4/Kageyama_Fly_High.png",
+      position: ["S"],
+      synergy: ["precisão"]
+    },
+    "tsukishima": {
+      name: "Kei Tsukishima",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/e/e4/Tsukishima_Fly_High.png",
+      position: ["MB"],
+      synergy: ["bloqueio"]
+    },
+    "yamaguchi": {
+      name: "Tadashi Yamaguchi",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/9/99/Yamaguchi_Fly_High.png",
+      position: ["MB"],
+      synergy: ["bloqueio"]
+    },
+    "sugawara": {
+      name: "Koushi Sugawara",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/f/f7/Sugawara_Fly_High.png",
+      position: ["S"],
+      synergy: ["suporte"]
+    },
+    "yachi": {
+      name: "Hitoka Yachi",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/6/63/Yachi_Fly_High.png",
+      position: ["L"],
+      synergy: ["defesa"]
+    },
+    "oikawa": {
+      name: "Tooru Oikawa",
+      img: "https://vignette.wikia.nocookie.net/haikyu/images/1/1d/Oikawa_Fly_High.png",
+      position: ["OP"],
+      synergy: ["precisão", "agilidade"]
     }
-}
+  };
 
-createBuilder();
+  // Sinergias com regras simples
+  const synergyRules = {
+    agilidade: {
+      description: "Aumenta a velocidade de ataque",
+      count: 2
+    },
+    precisão: {
+      description: "Melhora a precisão dos ataques",
+      count: 2
+    },
+    bloqueio: {
+      description: "Fortalece o bloqueio da equipe",
+      count: 2
+    },
+    suporte: {
+      description: "Melhora o suporte e passe",
+      count: 1
+    },
+    defesa: {
+      description: "Fortalece a defesa",
+      count: 1
+    }
+  };
+
+  // Função para criar lista de seleção de personagens por posição
+  function createSelector(positionId) {
+    const hex = document.getElementById(positionId);
+    const select = document.createElement("select");
+    select.innerHTML = '<option value="">-- Selecionar --</option>';
+
+    // Adiciona personagens que podem atuar naquela posição
+    for (const key in characters) {
+      if (characters[key].position.includes(hex.dataset.position)) {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = characters[key].name;
+        select.appendChild(option);
+      }
+    }
+    hex.appendChild(select);
+
+    // Evento para selecionar personagem
+    select.addEventListener("change", () => {
+      const val = select.value;
+      if (val && characters[val]) {
+        hex.querySelector("img").src = characters[val].img;
+        hex.querySelector(".char-name").textContent = characters[val].name;
+        hex.classList.add("selected");
+      } else {
+        hex.querySelector("img").src = "";
+        hex.querySelector(".char-name").textContent = hex.dataset.position;
+        hex.classList.remove("selected");
+      }
+      updateSynergies();
+    });
+  }
+
+  // Criar seletores em cada posição
+  ["pos-1", "pos-6", "pos-5", "pos-7", "pos-2", "pos-3", "pos-4"].forEach(createSelector);
+
+  // Atualiza sinergias ativadas conforme personagens selecionados
+  function updateSynergies() {
+    // Contar sinergias dos personagens selecionados
+    const counts = {};
+    for (const pos of ["pos-1", "pos-6", "pos-5", "pos-7", "pos-2", "pos-3", "pos-4"]) {
+      const hex = document.getElementById(pos);
+      const select = hex.querySelector("select");
+      if (select && select.value) {
+        const synergies = characters[select.value].synergy;
+        synergies.forEach(s => counts[s] = (counts[s] || 0) + 1);
+      }
+    }
+
+    // Filtra sinergias ativadas
+    let activated = [];
+    for (const key in counts) {
+      if (counts[key] >= synergyRules[key].count) {
+        activated.push(`<b>${key}</b>: ${synergyRules[key].description}`);
+      }
+    }
+
+    const sinergyList = document.getElementById("sinergy-list");
+    if (activated.length > 0) {
+      sinergyList.innerHTML = activated.map(s => `<div class="sinergy-item">${s}</div>`).join("");
+    } else {
+      sinergyList.textContent = "Nenhuma sinergia ativada.";
+    }
+  }
+
 </script>
 
 </body>
